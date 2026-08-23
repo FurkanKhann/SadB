@@ -152,9 +152,9 @@ function initCosmos() {
 function startEpigraph() {
     const el = document.getElementById('epigraph');
     const lines = [
-        "Some people arrive in your life",
-        "and everything before them",
-        "begins to feel like a rough draft."
+        "Wishing you a year filled",
+        "with joy, laughter, and",
+        "unforgettable moments."
     ];
 
     let lineIdx = 0;
@@ -292,12 +292,12 @@ function animateLetterScene() {
     const nextBtn = document.getElementById('toRoseBtn');
 
     const lines = [
-        "Today the world quietly celebrates something extraordinary — your existence.",
-        "In a universe of infinite noise, your presence is the silence that makes everything make sense.",
-        "You carry a kind of light that doesn't demand attention — it simply draws it, effortlessly, honestly.",
-        "I don't know how to explain what your smile does to an ordinary Tuesday, or how a conversation with you turns minutes into something I want to hold onto.",
-        "So here's my wish for you — not just today, but every day that follows: may life return to you even a fraction of the beauty you bring into it.",
-        "Happy Birthday, Sadqua."
+        "Wishing you a very Happy Birthday today!",
+        "It's always great having you as a friend.",
+        "I hope this coming year brings you lots of happiness, success, and good health.",
+        "Take time to celebrate and enjoy your special day to the fullest.",
+        "Here's to many more great memories and fun times ahead.",
+        "Happy Birthday, Sadqua!"
     ];
 
     // Show card
@@ -319,7 +319,7 @@ function animateLetterScene() {
     // Show closing and next
     const totalTime = 1200 + lines.length * 1400 + 800;
     setTimeout(() => {
-        closing.textContent = "— Yours, truly";
+        closing.textContent = "— Best wishes";
         closing.classList.add('show');
     }, totalTime);
     setTimeout(() => nextBtn.classList.add('show'), totalTime + 1000);
