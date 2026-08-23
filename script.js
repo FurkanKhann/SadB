@@ -78,9 +78,9 @@ function wireButtons() {
     const thinkBtn = document.getElementById('askThink');
     const nudge = document.getElementById('askNudge');
     const nudges = [
-        "Take your time... but I really hope you say yes.",
-        "Still here, still hoping.",
-        "I promise it'll be worth it.",
+        "No pressure at all, take your time.",
+        "Whenever you feel like it.",
+        "Just let me know what works for you.",
     ];
     thinkBtn.addEventListener('click', () => {
         thinkCount++;
@@ -89,10 +89,7 @@ function wireButtons() {
             nudge.classList.remove('hidden');
             nudge.classList.add('visible');
         } else {
-            // Gently transform
-            thinkBtn.textContent = "Okay, yes.";
-            thinkBtn.style.color = 'var(--rose)';
-            thinkBtn.onclick = () => goTo(4);
+            nudge.textContent = "Take all the time you need.";
         }
     });
 
