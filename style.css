@@ -1,0 +1,915 @@
+/* ============================================
+   FOR SADQUA — A Letter Written in Starlight
+   Sophisticated, cinematic birthday experience
+   ============================================ */
+
+/* ===== RESET & FOUNDATION ===== */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Palette — muted luxury */
+    --void: #060608;
+    --night: #0c0c12;
+    --ink: #16161e;
+    --gold: #c9a96e;
+    --gold-dim: #8a7445;
+    --gold-bright: #e4cc8e;
+    --rose: #b76e79;
+    --rose-dim: #8a4f58;
+    --rose-bright: #d4949d;
+    --cream: #ede6da;
+    --parchment: #f5f0e8;
+    --text: #d4cec3;
+    --text-dim: #7a756b;
+    --glass: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.06);
+
+    /* Typography */
+    --font-display: 'Cormorant Garamond', 'Georgia', serif;
+    --font-body: 'Lora', 'Georgia', serif;
+    --font-accent: 'Italiana', serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: var(--font-body);
+    background: var(--void);
+    color: var(--text);
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ===== AUDIO TOGGLE ===== */
+.audio-toggle {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 500;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--glass-border);
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(12px);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s ease;
+}
+
+.audio-toggle:hover {
+    border-color: var(--gold-dim);
+    background: rgba(201, 169, 110, 0.08);
+}
+
+.audio-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--text-dim);
+    transition: color 0.3s;
+}
+
+.audio-on { display: none; }
+.audio-toggle.playing .audio-off { display: none; }
+.audio-toggle.playing .audio-on { display: block; color: var(--gold); }
+
+/* ===== CHAPTERS (SCENES) ===== */
+.chapter {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1.2s ease, visibility 1.2s ease;
+    z-index: 1;
+}
+
+.chapter.visible {
+    opacity: 1;
+    visibility: visible;
+    z-index: 10;
+}
+
+.ch-content {
+    position: relative;
+    z-index: 5;
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+}
+
+canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* ===== CHAPTER 1: THE NIGHT SKY ===== */
+#ch-stars {
+    background: var(--void);
+}
+
+.stars-content {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.stars-epigraph {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 4vw, 36px);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--cream);
+    line-height: 1.7;
+    letter-spacing: 0.5px;
+    opacity: 0;
+    min-height: 100px;
+}
+
+.stars-epigraph.revealed {
+    opacity: 1;
+}
+
+.stars-cta {
+    margin-top: 50px;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all 0.8s ease;
+}
+
+.stars-cta.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Ghost Button */
+.ghost-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 32px;
+    background: transparent;
+    border: 1px solid var(--gold-dim);
+    border-radius: 2px;
+    color: var(--gold);
+    font-family: var(--font-accent);
+    font-size: 15px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.5s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.ghost-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201, 169, 110, 0.08), transparent);
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.ghost-btn:hover {
+    border-color: var(--gold);
+    box-shadow: 0 0 30px rgba(201, 169, 110, 0.1);
+    transform: translateY(-2px);
+}
+
+.ghost-btn:hover::before { opacity: 1; }
+
+.ghost-btn svg { color: var(--gold-dim); transition: color 0.3s; }
+.ghost-btn:hover svg { color: var(--gold); }
+
+.chapter-next {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    opacity: 0;
+    transition: opacity 0.8s ease 0.5s;
+}
+
+.chapter-next.show { opacity: 1; }
+
+/* ===== CHAPTER 2: CONSTELLATION NAME ===== */
+#ch-name {
+    background: var(--void);
+}
+
+.name-content {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.name-above {
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(16px, 2.5vw, 22px);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--gold-dim);
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.name-above.show { opacity: 1; }
+
+.name-main {
+    font-family: var(--font-display);
+    font-size: clamp(60px, 14vw, 140px);
+    font-weight: 300;
+    color: transparent;
+    background: linear-gradient(135deg, var(--gold-bright), var(--gold), var(--rose-bright), var(--gold-bright));
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: goldShift 8s ease-in-out infinite;
+    letter-spacing: 6px;
+    line-height: 1.1;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+    filter: drop-shadow(0 0 40px rgba(201, 169, 110, 0.15));
+}
+
+.name-main.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+@keyframes goldShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.name-underline {
+    width: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+    margin: 20px auto;
+    transition: width 1.5s ease 0.8s;
+}
+
+.name-underline.show { width: 200px; }
+
+.name-date {
+    font-family: var(--font-accent);
+    font-size: clamp(14px, 2vw, 18px);
+    color: var(--text-dim);
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 1s ease 1.2s;
+}
+
+.name-date.show { opacity: 1; }
+
+/* ===== CHAPTER 3: THE LETTER ===== */
+#ch-letter {
+    background: var(--void);
+    overflow-y: auto;
+}
+
+.letter-ambient {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 30%, rgba(201, 169, 110, 0.03) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.letter-card {
+    position: relative;
+    z-index: 5;
+    max-width: 560px;
+    width: 90%;
+    margin: auto;
+    padding: 50px 45px;
+    background: linear-gradient(180deg, rgba(18, 16, 22, 0.95), rgba(12, 12, 18, 0.98));
+    border: 1px solid var(--glass-border);
+    border-radius: 4px;
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 1s ease;
+}
+
+.letter-card.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.letter-ornament {
+    text-align: center;
+    color: var(--gold-dim);
+    opacity: 0.4;
+}
+
+.ornament-svg {
+    width: 120px;
+    height: 20px;
+}
+
+.letter-ornament.top { margin-bottom: 30px; }
+.letter-ornament.bottom { margin-top: 30px; }
+
+.letter-salutation {
+    font-family: var(--font-display);
+    font-size: clamp(26px, 4vw, 34px);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--gold);
+    margin-bottom: 24px;
+}
+
+.letter-text {
+    font-family: var(--font-body);
+    font-size: clamp(15px, 2.2vw, 17px);
+    font-weight: 400;
+    line-height: 2;
+    color: var(--text);
+    text-align: left;
+    min-height: 160px;
+}
+
+.letter-text .line {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.6s ease;
+    display: block;
+    margin-bottom: 14px;
+}
+
+.letter-text .line.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.letter-closing {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-style: italic;
+    color: var(--rose);
+    margin-top: 30px;
+    text-align: right;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+.letter-closing.show { opacity: 1; }
+
+/* ===== CHAPTER 4: THE ROSE ===== */
+#ch-rose {
+    background: var(--void);
+}
+
+.rose-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+/* CSS Rose */
+.rose-container {
+    position: relative;
+    width: 160px;
+    height: 240px;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rose-container.bloom {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.rose {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+}
+
+.rose-petal {
+    position: absolute;
+    border-radius: 50% 50% 50% 0;
+    background: var(--rose);
+    opacity: 0;
+    transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rose-container.bloom .rose-petal { opacity: 1; }
+
+.rose-petal.p1 {
+    width: 45px; height: 45px;
+    top: 30px; left: 28px;
+    background: linear-gradient(135deg, #c4737f, #a85b66);
+    transform: rotate(0deg);
+    transition-delay: 0.2s;
+    z-index: 7;
+}
+.rose-petal.p2 {
+    width: 50px; height: 48px;
+    top: 18px; left: 35px;
+    background: linear-gradient(135deg, #d4949d, #b76e79);
+    transform: rotate(45deg);
+    transition-delay: 0.4s;
+    z-index: 6;
+}
+.rose-petal.p3 {
+    width: 52px; height: 50px;
+    top: 22px; left: 12px;
+    background: linear-gradient(135deg, #c4737f, #9e5560);
+    transform: rotate(-30deg);
+    transition-delay: 0.6s;
+    z-index: 5;
+}
+.rose-petal.p4 {
+    width: 55px; height: 52px;
+    top: 8px; left: 22px;
+    background: linear-gradient(135deg, #d4949d, #c4737f);
+    transform: rotate(70deg);
+    transition-delay: 0.8s;
+    z-index: 4;
+}
+.rose-petal.p5 {
+    width: 58px; height: 55px;
+    top: 15px; left: 5px;
+    background: linear-gradient(135deg, #b76e79, #a85b66);
+    transform: rotate(-50deg);
+    transition-delay: 1s;
+    z-index: 3;
+}
+.rose-petal.p6 {
+    width: 60px; height: 56px;
+    top: 0; left: 30px;
+    background: linear-gradient(135deg, #d4949d, #c4737f);
+    transform: rotate(100deg);
+    transition-delay: 1.2s;
+    z-index: 2;
+}
+.rose-petal.p7 {
+    width: 62px; height: 58px;
+    top: 10px; left: -2px;
+    background: linear-gradient(135deg, #c4737f, #9e5560);
+    transform: rotate(-70deg);
+    transition-delay: 1.4s;
+    z-index: 1;
+}
+
+.rose-center {
+    position: absolute;
+    top: 40px; left: 42px;
+    width: 20px; height: 18px;
+    background: radial-gradient(circle, #e8b4bb, #d4949d);
+    border-radius: 50%;
+    z-index: 8;
+    opacity: 0;
+    transition: opacity 0.8s ease 1.6s;
+}
+
+.rose-container.bloom .rose-center { opacity: 1; }
+
+.rose-stem {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 140px;
+}
+
+.stem-line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 3px;
+    height: 0;
+    background: linear-gradient(180deg, #4a7a52, #3a6342);
+    border-radius: 2px;
+    transform: translateX(-50%);
+    transition: height 1s ease 0.3s;
+}
+
+.rose-container.bloom .stem-line { height: 130px; }
+
+.stem-leaf {
+    position: absolute;
+    width: 22px;
+    height: 12px;
+    background: #4a7a52;
+    border-radius: 50% 0;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+.stem-leaf.left {
+    left: -6px; top: 60px;
+    transform: rotate(-30deg);
+    transition-delay: 1s;
+}
+
+.stem-leaf.right {
+    right: -6px; top: 85px;
+    transform: rotate(30deg) scaleX(-1);
+    transition-delay: 1.2s;
+}
+
+.rose-container.bloom .stem-leaf { opacity: 1; }
+
+/* The Ask */
+.the-ask {
+    max-width: 440px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s ease;
+}
+
+.the-ask.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.ask-text {
+    font-family: var(--font-display);
+    font-size: clamp(18px, 3vw, 26px);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--cream);
+    line-height: 1.8;
+    margin-bottom: 35px;
+}
+
+.ask-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.ask-yes {
+    padding: 16px 48px;
+    background: linear-gradient(135deg, var(--rose), var(--rose-dim));
+    border: none;
+    border-radius: 3px;
+    color: var(--parchment);
+    font-family: var(--font-accent);
+    font-size: 16px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.5s ease;
+    box-shadow: 0 4px 20px rgba(183, 110, 121, 0.25);
+}
+
+.ask-yes:hover {
+    background: linear-gradient(135deg, var(--rose-bright), var(--rose));
+    box-shadow: 0 8px 35px rgba(183, 110, 121, 0.35);
+    transform: translateY(-2px);
+}
+
+.ask-think {
+    padding: 10px 24px;
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-style: italic;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.ask-think:hover { color: var(--text); }
+
+.ask-nudge {
+    margin-top: 20px;
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-style: italic;
+    color: var(--rose-dim);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+.ask-nudge.visible {
+    opacity: 1;
+}
+
+/* ===== CHAPTER 5: THE DATE ===== */
+#ch-date {
+    background: var(--void);
+    overflow-y: auto;
+}
+
+.date-content {
+    max-width: 440px;
+    margin: 0 auto;
+}
+
+.date-card, .confirmed-card {
+    background: linear-gradient(180deg, rgba(18, 16, 22, 0.95), rgba(10, 10, 14, 0.98));
+    border: 1px solid var(--glass-border);
+    border-radius: 4px;
+    padding: 40px 35px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all 0.8s ease;
+}
+
+.date-card.show, .confirmed-card.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.date-card-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.date-card-label {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--gold);
+    letter-spacing: 1px;
+}
+
+.date-card-divider {
+    width: 50px;
+    height: 1px;
+    background: var(--gold-dim);
+    margin: 16px auto 0;
+}
+
+/* Form */
+.date-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.field label {
+    display: block;
+    font-family: var(--font-accent);
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+}
+
+.field-optional {
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-style: italic;
+    letter-spacing: 0;
+    text-transform: none;
+    opacity: 0.5;
+    margin-left: 4px;
+}
+
+.field input,
+.field textarea {
+    width: 100%;
+    padding: 14px 16px;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 3px;
+    color: var(--cream);
+    font-family: var(--font-body);
+    font-size: 15px;
+    transition: all 0.4s ease;
+    outline: none;
+}
+
+.field input:focus,
+.field textarea:focus {
+    border-color: var(--gold-dim);
+    background: rgba(201, 169, 110, 0.03);
+    box-shadow: 0 0 20px rgba(201, 169, 110, 0.05);
+}
+
+.field textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+.field input[type="date"],
+.field input[type="time"] {
+    color-scheme: dark;
+}
+
+.confirm-btn {
+    width: 100%;
+    padding: 16px;
+    margin-top: 8px;
+    background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+    border: none;
+    border-radius: 3px;
+    color: var(--void);
+    font-family: var(--font-accent);
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    position: relative;
+}
+
+.confirm-btn:hover {
+    background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+    box-shadow: 0 6px 25px rgba(201, 169, 110, 0.2);
+    transform: translateY(-1px);
+}
+
+.confirm-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.confirm-loader {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    align-items: center;
+}
+
+.confirm-loader span {
+    width: 6px;
+    height: 6px;
+    background: var(--void);
+    border-radius: 50%;
+    animation: dotPulse 0.6s ease-in-out infinite;
+}
+
+.confirm-loader span:nth-child(2) { animation-delay: 0.1s; }
+.confirm-loader span:nth-child(3) { animation-delay: 0.2s; }
+
+@keyframes dotPulse {
+    0%, 100% { transform: translateY(0); opacity: 0.5; }
+    50% { transform: translateY(-6px); opacity: 1; }
+}
+
+/* Confirmed */
+.confirmed-card {
+    text-align: center;
+}
+
+.confirmed-check {
+    margin-bottom: 24px;
+}
+
+.check-svg {
+    width: 64px;
+    height: 64px;
+    color: var(--gold);
+}
+
+.check-svg circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    animation: drawCircle 0.8s ease forwards;
+}
+
+.check-svg path {
+    stroke-dasharray: 50;
+    stroke-dashoffset: 50;
+    animation: drawCheck 0.5s ease 0.6s forwards;
+}
+
+@keyframes drawCircle {
+    to { stroke-dashoffset: 0; }
+}
+
+@keyframes drawCheck {
+    to { stroke-dashoffset: 0; }
+}
+
+.confirmed-title {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--gold);
+    margin-bottom: 24px;
+}
+
+.confirmed-details {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 3px;
+    padding: 20px;
+    margin-bottom: 24px;
+}
+
+.confirmed-details p {
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--text);
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.confirmed-details .detail-label {
+    font-family: var(--font-accent);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    width: 60px;
+    text-align: right;
+}
+
+.confirmed-details .detail-value {
+    color: var(--cream);
+    font-weight: 500;
+}
+
+.confirmed-note {
+    font-size: 13px;
+    color: var(--text-dim);
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+.confirmed-closing {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--rose);
+}
+
+/* ===== PROGRESS BAR ===== */
+.progress {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.03);
+    z-index: 100;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+    transition: width 0.8s ease;
+}
+
+/* ===== UTILITY ===== */
+.hidden { display: none !important; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+    .letter-card { padding: 35px 28px; }
+    .date-card, .confirmed-card { padding: 30px 24px; }
+    .ghost-btn { padding: 12px 24px; font-size: 13px; letter-spacing: 1.5px; }
+    .ask-yes { padding: 14px 36px; font-size: 14px; }
+    .audio-toggle { top: 16px; right: 16px; width: 38px; height: 38px; }
+    .rose-container { width: 120px; height: 200px; }
+    .rose { width: 80px; height: 80px; }
+    .rose-petal.p1 { width: 36px; height: 36px; top: 24px; left: 22px; }
+    .rose-petal.p2 { width: 40px; height: 38px; top: 14px; left: 28px; }
+    .rose-petal.p3 { width: 42px; height: 40px; top: 18px; left: 10px; }
+    .rose-petal.p4 { width: 44px; height: 42px; top: 6px; left: 18px; }
+    .rose-petal.p5 { width: 46px; height: 44px; top: 12px; left: 4px; }
+    .rose-petal.p6 { width: 48px; height: 44px; top: 0; left: 24px; }
+    .rose-petal.p7 { width: 50px; height: 46px; top: 8px; left: -2px; }
+    .rose-center { top: 32px; left: 34px; }
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(201, 169, 110, 0.15); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(201, 169, 110, 0.3); }

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Sadqua</title>
+    <meta name="description" content="A letter written in starlight">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Lora:ital,wght@0,400;0,500;1,400&family=Italiana&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body>
+
+    <!-- Ambient music toggle -->
+    <button id="audioToggle" class="audio-toggle" aria-label="Toggle ambient music">
+        <svg class="audio-icon audio-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+        </svg>
+        <svg class="audio-icon audio-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/>
+        </svg>
+    </button>
+
+    <!-- ====== CHAPTER 1: THE NIGHT SKY ====== -->
+    <section id="ch-stars" class="chapter visible">
+        <canvas id="cosmos"></canvas>
+        <div class="ch-content stars-content">
+            <p class="stars-epigraph" id="epigraph"></p>
+            <div class="stars-cta">
+                <button id="enterBtn" class="ghost-btn">
+                    <span>Enter</span>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== CHAPTER 2: CONSTELLATION NAME ====== -->
+    <section id="ch-name" class="chapter">
+        <canvas id="constellation-canvas"></canvas>
+        <div class="ch-content name-content">
+            <span class="name-above" id="nameAbove"></span>
+            <h1 class="name-main" id="nameMain">Sadqua</h1>
+            <div class="name-underline"></div>
+            <p class="name-date">24 August</p>
+        </div>
+        <button id="toLetterBtn" class="ghost-btn chapter-next">
+            <span>Read my letter</span>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+    </section>
+
+    <!-- ====== CHAPTER 3: THE LETTER ====== -->
+    <section id="ch-letter" class="chapter">
+        <div class="letter-ambient"></div>
+        <div class="letter-card">
+            <div class="letter-ornament top">
+                <svg viewBox="0 0 200 20" class="ornament-svg"><path d="M0,10 Q50,0 100,10 Q150,20 200,10" fill="none" stroke="currentColor" stroke-width="0.5"/></svg>
+            </div>
+            <div class="letter-body">
+                <p class="letter-salutation">Sadqua,</p>
+                <div class="letter-text" id="letterText"></div>
+                <p class="letter-closing" id="letterClosing"></p>
+            </div>
+            <div class="letter-ornament bottom">
+                <svg viewBox="0 0 200 20" class="ornament-svg"><path d="M0,10 Q50,20 100,10 Q150,0 200,10" fill="none" stroke="currentColor" stroke-width="0.5"/></svg>
+            </div>
+        </div>
+        <button id="toRoseBtn" class="ghost-btn chapter-next">
+            <span>One last thing</span>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+    </section>
+
+    <!-- ====== CHAPTER 4: THE ROSE & THE ASK ====== -->
+    <section id="ch-rose" class="chapter">
+        <canvas id="petals-canvas"></canvas>
+        <div class="ch-content rose-content">
+            <!-- The Rose (Pure CSS) -->
+            <div class="rose-container" id="roseContainer">
+                <div class="rose">
+                    <div class="rose-petal p1"></div>
+                    <div class="rose-petal p2"></div>
+                    <div class="rose-petal p3"></div>
+                    <div class="rose-petal p4"></div>
+                    <div class="rose-petal p5"></div>
+                    <div class="rose-petal p6"></div>
+                    <div class="rose-petal p7"></div>
+                    <div class="rose-center"></div>
+                </div>
+                <div class="rose-stem">
+                    <div class="stem-line"></div>
+                    <div class="stem-leaf left"></div>
+                    <div class="stem-leaf right"></div>
+                </div>
+            </div>
+
+            <!-- The Question -->
+            <div class="the-ask" id="theAsk">
+                <p class="ask-text">I would be honoured if you'd let me<br>take you out — just the two of us.</p>
+                <div class="ask-actions">
+                    <button class="ask-yes" id="askYes">I'd love that</button>
+                    <button class="ask-think" id="askThink">Let me think...</button>
+                </div>
+                <p class="ask-nudge hidden" id="askNudge"></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== CHAPTER 5: THE DATE ====== -->
+    <section id="ch-date" class="chapter">
+        <canvas id="gold-particles"></canvas>
+        <div class="ch-content date-content">
+
+            <!-- Booking Form -->
+            <div class="date-card" id="dateCard">
+                <div class="date-card-header">
+                    <p class="date-card-label">An Evening Together</p>
+                    <div class="date-card-divider"></div>
+                </div>
+                <form id="bookingForm" class="date-form" autocomplete="off">
+                    <div class="field">
+                        <label for="dateInput">When</label>
+                        <input type="date" id="dateInput" required>
+                    </div>
+                    <div class="field">
+                        <label for="timeInput">What time</label>
+                        <input type="time" id="timeInput" required>
+                    </div>
+                    <div class="field">
+                        <label for="placeInput">Where <span class="field-optional">optional</span></label>
+                        <input type="text" id="placeInput" placeholder="A place you love...">
+                    </div>
+                    <div class="field">
+                        <label for="noteInput">A note for me <span class="field-optional">optional</span></label>
+                        <textarea id="noteInput" rows="2" placeholder="Anything you'd like to say..."></textarea>
+                    </div>
+                    <button type="submit" class="confirm-btn" id="confirmBtn">
+                        <span class="confirm-text">Confirm</span>
+                        <span class="confirm-loader hidden"><span></span><span></span><span></span></span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Confirmation -->
+            <div class="confirmed-card hidden" id="confirmedCard">
+                <div class="confirmed-check">
+                    <svg viewBox="0 0 52 52" class="check-svg">
+                        <circle cx="26" cy="26" r="24" fill="none" stroke="currentColor" stroke-width="1"/>
+                        <path d="M15 27l7 7 15-15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <p class="confirmed-title">It's set.</p>
+                <div class="confirmed-details" id="confirmedDetails"></div>
+                <p class="confirmed-note">Confirmation sent to both of us.</p>
+                <p class="confirmed-closing">See you soon, Sadqua.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Progress indicator -->
+    <div class="progress" id="progress">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
